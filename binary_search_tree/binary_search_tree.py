@@ -17,51 +17,89 @@ class BinarySearchTree:
         # print('COMPARE:', self.value, value)
         if value < self.value:
             print('LEFT: ',self.value, value)
+
             if self.left == None:
                 self.left = BinarySearchTree(value)
-                print('left val:', self.left)
-                return
+                print('left inserted:', self.left)
             else:
-                # is something is there, go down a level
+                # if something is there, try again from child
                 self.left.insert(value)
+
         # if greater or same, go right
         else: # value >= self.value:
             print('RIGHT: ', self.value, value)
             if not self.right:
                 self.right = BinarySearchTree(value)
-                print('right val:', self.left)
-                return
+                print('right inserted:', self.left)
             else:
-                # try again from child
+                # if something is there, try again from child
                 self.right.insert(value)
 
     # Return True if the tree contains the value
-    # False if it does not
+    # Return False if not
     def contains(self, target):
         # if value is root node
+        if self.value == target:
+            return True
         # if less, go left
+        if target < self.value:
+            # if the left node does exist, it's not in tree
+            if not self.left:
+                return False
+            else:
+                # try again from child
+                # we return bc we need to 'report' what search finds
+                return self.left.contains(target)
+        else: # if >= go right
+            # else no child, it's not in the tree, return False
+            if not self.right:
+                return False
             # try again from child
-        # if >= go right
-            # try again from child
-        # else no child, return None
+            else:
+                return self.right.contains(target)
 
-        pass
 
     # Return the maximum value found in the tree
     def get_max(self):
-        # go right until no more right
-        pass
+        # recursive solution: go right until no more right
+        # if not self.right:
+        #     return self.value
+        # else:
+        #     return self.right.get_max()
+
+        # Iterative solution w while loop:
+        max_value = self.value
+        # create a reference to cur node and update it while traverse
+        current = self
+        while current:
+            if current.value > max_value:
+                max_value = current.value
+            current = current.right
+            print('self val:', self.value)
+
+        return max_value
+
 
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
-        pass
+        # call the same function on every node
+        cb(self.value)
+
+        # if left is there, recurse and send the same cb function
+        if self.left:
+            self.left.for_each(cb)
+        # if right is there, recurse and send the same cb function
+        if self.right:
+            self.right.for_each(cb)
+
 
     # DAY 2 Project -----------------------
 
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
+        # use stack?
         pass
 
     # Print the value of every node, starting with the given node,
