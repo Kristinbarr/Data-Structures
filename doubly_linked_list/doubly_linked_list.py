@@ -77,9 +77,8 @@ class DoublyLinkedList:
     def remove_from_head(self):
         # save cur head's value
         value = self.head.value
-        # set head to that value
+        # remove the cur head
         self.delete(self.head)
-        # return value
         return value
 
     """Wraps the given value in a ListNode and inserts it
