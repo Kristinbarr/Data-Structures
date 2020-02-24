@@ -52,7 +52,24 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle 
     the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
-        pass
+        new_node = ListNode(value)
+        self.length += 1
+        # if self.head is none, tail is also none, set both to new node
+        if not self.head and not self.tail:
+            # empty list, this is head and tail
+            self.head = new_node
+            self.tail = new_node
+        # update previous head
+        # this needs to be current head bc we're adding to head
+        else:
+            # save self.head since it will be overwritten
+            # new_node.next = self.head
+            # self.head.prev = new_node
+            # self.head = new_node
+
+            # alternative solution using .insert_before
+            self.head.insert_before(value)
+            self.head = self.head.prev
 
     """Removes the List's current head node, making the
     current head's next node the new head of the List.
@@ -64,7 +81,17 @@ class DoublyLinkedList:
     as the new tail of the list. Don't forget to handle 
     the old tail node's next pointer accordingly."""
     def add_to_tail(self, value):
-        pass
+        self.length += 1
+
+        # if tail and head are none, set new-_node to both
+        if not self.head and not self.tail:
+            # empty list, this is head and tail
+            self.head = new_node
+            self.tail = new_node
+        else:
+            # we know that the list is populated
+            self.tail.insert_after(value)
+            self.tail = self.tail.next
 
     """Removes the List's current tail node, making the 
     current tail's previous node the new tail of the List.
@@ -85,8 +112,30 @@ class DoublyLinkedList:
     """Removes a node from the list and handles cases where
     the node was the head or the tail"""
     def delete(self, node):
-        pass
-        
+        # if LL i empty
+        if not self.head and not self.tail:
+            print('ERR: attempted to delete node not in list')
+            return
+        # if node is both head and tail, set pointers to None
+        elif self.head == self.tail:
+            self.head = None
+            self.tail = None
+        # if node is head
+        elif node == self.head:
+            # take node at next pointer, set it to cur head
+            self.head = self.head.next
+            node.delete()
+        # if node is tail
+        elif node == self.tail:
+            # take node at prev pointer, set it to cur tail
+            self.tail = self.tail.prev
+            node.delete()
+        # node is in middle
+        else:
+            node.delete()
+
+        # update length
+        self.length -= 1
     """Returns the highest value currently in the list"""
     def get_max(self):
         pass
