@@ -14,23 +14,16 @@ class BinarySearchTree:
     def insert(self, value):
         save_root = self.value
         # if less, go left
-        # print('COMPARE:', self.value, value)
         if value < self.value:
-            print('LEFT: ',self.value, value)
-
             if self.left == None:
                 self.left = BinarySearchTree(value)
-                print('left inserted:', self.left)
-            else:
-                # if something is there, try again from child
+            else: # if something is there, try again from child
                 self.left.insert(value)
 
         # if greater or same, go right
         else: # value >= self.value:
-            print('RIGHT: ', self.value, value)
             if not self.right:
                 self.right = BinarySearchTree(value)
-                print('right inserted:', self.left)
             else:
                 # if something is there, try again from child
                 self.right.insert(value)
@@ -85,12 +78,14 @@ class BinarySearchTree:
     def for_each(self, cb):
         # call the same function on every node
         cb(self.value)
-
+        print('FE enter: ', self.value)
         # if left is there, recurse and send the same cb function
         if self.left:
+            print('FE left: ', self.left.value)
             self.left.for_each(cb)
         # if right is there, recurse and send the same cb function
         if self.right:
+            print('FE right: ', self.right.value)
             self.right.for_each(cb)
 
 
@@ -99,8 +94,15 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        # use stack?
-        pass
+        # if cur node has value (we're not at the leaf, keep going)
+        if node:
+            # recurse left until no node, we found smallest value
+            self.in_order_print(node.left)
+            # once finding smallest node unwinds, print smallest
+            print(node.value)
+            # then traverse right side of cur node
+            self.in_order_print(node.right)
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
