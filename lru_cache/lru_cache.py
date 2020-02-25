@@ -1,3 +1,5 @@
+from doubly_linked_list import DoublyLinkedList
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -7,7 +9,10 @@ class LRUCache:
     to every node stored in the cache.
     """
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.size = 0
+        self.order = DoublyLinkedList()
+        self.storage = dict()
 
     """
     Retrieves the value associated with the given key. Also
@@ -17,7 +22,18 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
+
+        # if key is in dict, move to tail bc its most recently used
+        if key in self.storage:
+            # save found node
+            node = self.storage[key]
+            # move to tail
+            self.order.move_to_end(node)
+            # access node's value and return it
+            return node.value[1]
+        #  if key not found, return none
+        else:
+            return None
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -30,4 +46,31 @@ class LRUCache:
     the newly-specified value.
     """
     def set(self, key, value):
-        pass
+        # for this case, HEAD is LEAST recently used, TAIL is MOST
+
+        # if key found, update node, set as head of ll
+        if key in self.storage:
+            # create node 'shell' from key in dict, O(1)
+            node = self.storage[key]
+            # set value of node shell to tuple
+            node.value = (key, value)
+            # move to tail of LL
+            self.order.move_to_end(node)
+            return
+
+        # if dict full, remove tail node from LL and dict
+        if self.size == self.limit:
+            # delete least recently used node (at head)
+            # [0] is first value in tuple, it's used as key for dict
+            del self.storage[self.order.head.value[0]]
+            # move new node to head
+            self.order.remove_from_head()
+            # why do we subtract here?
+            self.size -= 1
+
+        # else key not found, add new node to tail of LL
+        self.order.add_to_tail((key, value))
+        # add key and node to dict
+        self.storage[key] = self.order.tail
+        # increment after operations are complete
+        self.size += 1
