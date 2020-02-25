@@ -75,7 +75,11 @@ class DoublyLinkedList:
     current head's next node the new head of the List.
     Returns the value of the removed Node."""
     def remove_from_head(self):
-        pass
+        # save value of cur head to return
+        value = self.head.value
+        # node delete method will set the correct pointers
+        self.delete(self.head)
+        return value
 
     """Wraps the given value in a ListNode and inserts it 
     as the new tail of the list. Don't forget to handle 
@@ -107,24 +111,29 @@ class DoublyLinkedList:
     """Removes the input node from its current spot in the 
     List and inserts it as the new head node of the List."""
     def move_to_front(self, node):
-        # if the node is at the front, it where it should be
-        if node is self.head:
-            return
-        # save node value
-        value = node.value
-        # if the tail is the node, first step: remove from tail
-        if node is self.tail:
-            self.remove_from_tail()
-        # else delete the node
-        else:
-            node.delete()
-        # next add node to the head
-        self.add_to_head(value)
+        # # if the node is at the front, it is where it should be
+        # if node is self.head:
+        #     return
+        # # save node value
+        # value = node.value
+        # # if the tail is the node, first step: remove from tail
+        # if node is self.tail:
+        #     self.remove_from_tail()
+        # # else delete the node
+        # else:
+        #     node.delete()
+        # # next add node to the head
+        # self.add_to_head(value)
+
+        # ALTERNATE VERSION
+        self.delete(node)
+        self.add_to_head(node.value)
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new tail node of the List."""
     def move_to_end(self, node):
-        pass
+        self.delete(node)
+        self.add_to_tail(node.value)
 
     """Removes a node from the list and handles cases where
     the node was the head or the tail"""
