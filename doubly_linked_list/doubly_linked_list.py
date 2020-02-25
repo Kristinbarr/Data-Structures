@@ -52,8 +52,8 @@ class DoublyLinkedList:
     as the new head of the list. Don't forget to handle 
     the old head node's previous pointer accordingly."""
     def add_to_head(self, value):
-        new_node = ListNode(value)
         self.length += 1
+        new_node = ListNode(value)
         # if self.head is none, tail is also none, set both to new node
         if not self.head and not self.tail:
             # empty list, this is head and tail
@@ -81,9 +81,10 @@ class DoublyLinkedList:
     as the new tail of the list. Don't forget to handle 
     the old tail node's next pointer accordingly."""
     def add_to_tail(self, value):
+        pass
         self.length += 1
-
-        # if tail and head are none, set new-_node to both
+        new_node = ListNode(value)
+        # if tail and head are none, set new_node to both
         if not self.head and not self.tail:
             # empty list, this is head and tail
             self.head = new_node
@@ -102,7 +103,19 @@ class DoublyLinkedList:
     """Removes the input node from its current spot in the 
     List and inserts it as the new head node of the List."""
     def move_to_front(self, node):
-        pass
+        # if the node is at the front, it where it should be
+        if node is self.head:
+            return
+        # save node value
+        value = node.value
+        # if the tail is the node, first step: remove from tail
+        if node is self.tail:
+            self.remove_from_tail()
+        # else delete the node
+        else:
+            node.delete()
+        # next add node to the head
+        self.add_to_head(value)
 
     """Removes the input node from its current spot in the 
     List and inserts it as the new tail node of the List."""
@@ -138,4 +151,19 @@ class DoublyLinkedList:
         self.length -= 1
     """Returns the highest value currently in the list"""
     def get_max(self):
-        pass
+        # if no head, there is no max value
+        if self.head == None:
+            print('ERROR: empty list')
+            return
+        else:
+            # save current node and change to iterate
+            cur_node = self.head
+            # save max val, init as first val
+            max_val = self.head.value
+            while cur_node is not None:
+                if cur_node.value > max_val:
+                    max_val = cur_node.value
+                # iterate by changing node to the next node
+                cur_node = cur_node.next
+            return max_val
+
