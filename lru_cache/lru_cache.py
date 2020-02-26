@@ -22,18 +22,18 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
     def get(self, key):
-        pass
-        # # if key is in storage
-        # if key in self.storage:
-        #     # move it to the end
-        #     node = self.storage[key]
-        #     self.order.move_to_end(node)
-        #     # return the value
-        #     return node.value[1]
+        # if key is in storage
+        if key in self.storage:
+            # move it to the start/head
+            node = self.storage[key]
+            print('GETTING! node:', node)
+            self.order.move_to_front(node)
+            # return the value
+            return node.value[1]
             
-        # # if not
-        # else:
-        #     return None
+        # if not in storage
+        else:
+            return None
 
 
     """
@@ -47,55 +47,49 @@ class LRUCache:
     the newly-specified value.
     """
     # storage-dict = { 
-    #   key1: (key1, val1),
+    #   key1: Node(value: (key1, val1) next:..., prev:...),
     #   key2: (key2, val2),
     #   key3: (key3, val3)
     # }
+
     def set(self, key, value):
         # create set first since get can't work without setting first
 
-        print('\n start size:', self.size, 'limit:', self.limit)
-
-        # if cache is full,
-        if self.size == self.limit:
-            # delete the cur head in dict/storage
-            # self.order.head.value is a tuple, [0] is the key
-            cur_head_key = self.order.head.value[0]
-            del self.storage[cur_head_key]
-            # remove one from tail
-            self.order.remove_from_tail()
-            # decrement size
-            self.size -= 1
+        print('SET! size:', self.size)
 
         # if key found in dict,
         if key in self.storage:
-            print('key in storage! cur size:', self.size)
             # overwrite value
             node = self.storage[key]
             node.value = (key, value)
             # move node to head
             self.order.move_to_front(node)
+            return
 
-        # if key NOT found, 
-        else:
-            print('key not in storage! new size:', self.size)
-            # create new node and set it as new head
-            # ?: why do we keep the value as a tuple?
-            self.order.add_to_head((key,value))
-            # ?: why don't we add to the dict here?
-            # add new node to dict(cur not working)
-            # self.storage[key] = self.order.add_to_head((key,value))
-
+        # if cache is full,
+        if self.size == self.limit:
+            # delete the cur tail in dict/storage
+            # self.order.tail.value is a tuple, [0] is the key
+            cur_tail_key = self.order.tail.value[0]
+            del self.storage[cur_tail_key]
+            # remove one from tail
+            self.order.remove_from_tail()
+            # decrement size
+            self.size -= 1
         
+        # create new node and set it as new head
+        # ?: why do we keep the value as a tuple?
+        self.order.add_to_head((key,value))
+        # add new node to dict
+        self.storage[key] = self.order.head
         # increment size
         self.size += 1
-        return
 
 
 
 
 
-
+# BRIANS HELP
     # # if cache is NOT empty(at least 1, maybe full):
     #     # if key is in dict, overwrite with new value
     #     if key in self.storage:
