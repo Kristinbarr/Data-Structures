@@ -3,8 +3,6 @@ sys.path.append('../queue_and_stack')
 from dll_queue import Queue
 from dll_stack import Stack
 
-
-
 class BinarySearchTree:
     def __init__(self, value):
         self.value = value
@@ -13,21 +11,52 @@ class BinarySearchTree:
 
     # Insert the given value into the tree
     def insert(self, value):
-        pass
-    # if there is no node at root
-        # insert this as root
-    # compare value to the root
-    # if value is smaller
-        # look left if node is present, repeat steps
-        # if no node: 
-            # insert?
-    # if value is greater or equal
+
+        # if there is no node at root
+        # if self.value == None:
+        #     print('self is NONE', self.value)
+        #     # insert value as root
+        #     self.value = BinarySearchTree(value)
+        #     print('inserted val: ', self.value)
+
+        # if value is smaller than root,
+        if value < self.value:
+            # if left node is present, 
+            if self.left == None:
+                # insert new 'tree' on left
+                self.left = BinarySearchTree(value)
+            else:
+                # repeat steps on left side
+                self.left.insert(value)
+    
+        # if value is greater or equal than root,
+        else:
+            # if right node is present,
+            if self.right == None:
+                # insert new 'tree' on right
+                self.right = BinarySearchTree(value)
+            else:
+                # repeat steps on right side
+                self.right.insert(value)
+
+
 
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
         pass
+        # if no root node:
+            # return false
+        # if target is equal to root:
+            # return true
+        # if target is smaller than the root:
+            # repeat on left
+        # if target is larger than root:
+            # repeat on right side
+
+
+            
 
     # Return the maximum value found in the tree
     def get_max(self):
