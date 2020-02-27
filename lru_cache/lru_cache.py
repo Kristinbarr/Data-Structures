@@ -47,22 +47,21 @@ class LRUCache:
     the newly-specified value.
     """
     # storage-dict = { 
-    #   key1: Node(value: (key1, val1) next:..., prev:...),
-    #   key2: (key2, val2),
-    #   key3: (key3, val3)
+    #   key1: Node( value:(key1, val1), next:..., prev:... ),
+    #   key2: Node( value:(key2, val2), next:..., prev:... ),
+    #   key3: Node( value:(key3, val3), next:..., prev:... )
     # }
 
     def set(self, key, value):
         # create set first since get can't work without setting first
+        # I chose most recent as head, oldest as tail
 
-        print('SET! size:', self.size)
-
-        # if key found in dict,
+        # if key is found in dict,
         if key in self.storage:
-            # overwrite value
+            # overwrite existing value
             node = self.storage[key]
             node.value = (key, value)
-            # move node to head
+            # move new node to head
             self.order.move_to_front(node)
             return
 
@@ -70,48 +69,16 @@ class LRUCache:
         if self.size == self.limit:
             # delete the cur tail in dict/storage
             # self.order.tail.value is a tuple, [0] is the key
-            cur_tail_key = self.order.tail.value[0]
-            del self.storage[cur_tail_key]
+            # we save a tuple to get the key from the oldest node
+            oldest_key = self.order.tail.value[0]
+            del self.storage[oldest_key]
             # remove one from tail
             self.order.remove_from_tail()
-            # decrement size
             self.size -= 1
         
         # create new node and set it as new head
-        # ?: why do we keep the value as a tuple?
         self.order.add_to_head((key,value))
         # add new node to dict
         self.storage[key] = self.order.head
-        # increment size
         self.size += 1
 
-
-
-
-
-# BRIANS HELP
-    # # if cache is NOT empty(at least 1, maybe full):
-    #     # if key is in dict, overwrite with new value
-    #     if key in self.storage:
-    #         node = self.storage[key]
-    #         # overwrite val( put tuple as node's val)
-    #         node.value = (key, value)
-    #         # move it to end/head
-    #         self.order.move_to_end(node)
-    #         return
-    #     # if cache is full
-    #     if self.size == self.limit:
-    #         # remove oldest from dict
-    #         del self.storage[self.order.head.value[0]]
-    #         # remove from LL
-    #         self.order.remove_from_head()
-    #         # decrement size
-    #         self.size -= 1
-
-    # # if cache is empty do all the below:
-    #     # add to LL (key and val)
-    #     self.order.add_to_tail((key, value))
-    #     # add key and val to dict
-    #     self.storage[key] = self.order.tail
-    #     # increment size
-    #     self.size += 1
