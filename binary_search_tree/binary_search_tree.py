@@ -12,7 +12,7 @@ class BinarySearchTree:
     # Insert the given value into the tree
     def insert(self, value):
 
-        # if there is no node at root
+        # if there is no node at root: why does this work?
         # if self.value == None:
         #     print('self is NONE', self.value)
         #     # insert value as root
@@ -39,24 +39,38 @@ class BinarySearchTree:
                 # repeat steps on right side
                 self.right.insert(value)
 
-
-
+#         (5)
+#     (2)    (7)
+#      (3)
+# target = 7
 
     # Return True if the tree contains the value
     # False if it does not
     def contains(self, target):
-        pass
-        # if no root node:
-            # return false
         # if target is equal to root:
-            # return true
+        if target == self.value:
+            return True
+        
+        # if no root node: why doesn't this work?
+        # if self.value == None:
+        #     print('NOT FOUND!')
+        #     return False
+
         # if target is smaller than the root:
+        if target < self.value:
+            if self.left == None:
+                return False
             # repeat on left
+            return self.left.contains(target)
+
         # if target is larger than root:
+        else: # target >= self.value:
+            if self.left == None:
+                return False
             # repeat on right side
+            return self.right.contains(target)
 
 
-            
 
     # Return the maximum value found in the tree
     def get_max(self):
