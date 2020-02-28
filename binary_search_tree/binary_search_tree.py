@@ -52,7 +52,7 @@ class BinarySearchTree:
             return True
         
         # if no root node: why doesn't this work?
-        # if self.value == None:
+        # if self == None:
         #     print('NOT FOUND!')
         #     return False
 
@@ -96,10 +96,24 @@ class BinarySearchTree:
 
     # DAY 2 Project -----------------------
 
+#            (1)
+#              (8)
+#            (5)
+#         (3)   (7)
+#      (2) (4) (6)
+
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        # find smallest value
+        if self.left:
+            # recurse on left side
+            self.left.in_order_print(self.left)
+        # after no more left nodes and no more invocations,
+        # print once past calling all left nodes
+        print(self.value)
+        if self.right:
+            self.right.in_order_print(self.right)
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
